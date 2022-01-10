@@ -1,6 +1,6 @@
 # Flappy Bird Game in Python
 
-<div style="display:flex; justify-content: space-between;">
+<div style="display:flex; justify-content: center;">
   
   
   <img src="./img01.png" alt="drawing" width="300"/>
