@@ -2,7 +2,10 @@
 
 <div style="display:flex; justify-content: space-between;">
   
-  ![img](./img01.png){width=75%}
-  ![img](./pipe.png){width=75%}
-  ![img](./gameOver.png){width=75%}
+  
+  <img src="./img01.png" alt="drawing" width="200"/>
+ 
+  <img src="./pipe.png" alt="drawing" width="200"/>
+ 
+  <img src="./gameOver.png" alt="drawing" width="200"/>
 </div>
