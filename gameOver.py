@@ -16,7 +16,7 @@ class GameOver(pygame.sprite.Sprite):
         self.mask = pygame.mask.from_surface(self.image)
         self.rect[0] = w/2 - (GAME_OVER_WIDTH / 2)
         self.rect[1] = h/4 
-
+        
     def update(self):
         pass
 

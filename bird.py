@@ -37,3 +37,6 @@ class Bird(pygame.sprite.Sprite):
 
     def bump(self):  
         self.speed = -SPEED
+
+    def setGravity(self, valueGravity):
+        GRAVITY = valueGravity

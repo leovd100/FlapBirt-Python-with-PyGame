@@ -5,42 +5,34 @@ from ground import Ground
 from spriteOffScreen import SpriteOff
 from commands import Commands
 from gameOver import GameOver
-
+from pipe import Pipe
 SCREEN_WIDTH = 400
 SCREEN_HEIGHT = 650
-BACKGROUND = pygame.image.load('./sprites/background-day.png')
+
+def backGroundRandom():
+    value = random.randint(1,2)
+    if value == 1:
+        return './sprites/background-day.png'
+    else: 
+        return './sprites/background-night.png'
+
+BACKGROUND = pygame.image.load(backGroundRandom())
 BACKGROUND = pygame.transform.scale(BACKGROUND, (SCREEN_WIDTH, SCREEN_HEIGHT))
+
+
+
 GROUND_WIDTH = 2 * SCREEN_WIDTH
 GAME_SPEED = 10
-PIPE_WIDTH = 80
-PIPE_HEIGHT = 500
-PIPE_GAP = 200
 
-class Pipe(pygame.sprite.Sprite):
 
-    def __init__(self, inverted, xPos,ySize):
-        pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load('./sprites/pipe-red.png').convert_alpha()
-        self.image = pygame.transform.scale(self.image, (PIPE_WIDTH, PIPE_HEIGHT))
-        self.rect = self.image.get_rect()
-        self.rect[0] = xPos
-
-        if inverted:
-            self.image = pygame.transform.flip(self.image,False, True)
-            self.rect[1] = -(self.rect[3] - ySize)
-        else:
-            self.rect[1] = SCREEN_HEIGHT - ySize
-  
-        self.mask = pygame.mask.from_surface(self.image)
-
-    def update(self):
-        self.rect[0] -= GAME_SPEED
 
 
 def get_random_pipes(xPos):
     size = random.randint(100,300)
-    pipe = Pipe(False, xPos, size)
-    pipe_inverted = Pipe(True, xPos, SCREEN_HEIGHT - size - PIPE_GAP)
+    pipe = Pipe(False, xPos, size,SCREEN_HEIGHT)
+    pipe_inverted = Pipe(True, xPos, SCREEN_HEIGHT - size, SCREEN_HEIGHT)
+    pipe.setGameSpeed(random.randint(130,200))
+    pipe_inverted.setGameSpeed(random.randint(130,200))
     return (pipe, pipe_inverted)
 
 
@@ -65,10 +57,9 @@ for i in range(2):
     ground_group.add(ground)
 
 
-
 pipe_group = pygame.sprite.Group()
 for i in range(2):
-    pipes = get_random_pipes(SCREEN_WIDTH * i + 600)
+    pipes = get_random_pipes(SCREEN_WIDTH * i + 500)
     pipe_group.add(pipes[0])
     pipe_group.add(pipes[1])
 
@@ -76,7 +67,7 @@ for i in range(2):
 
 # Controla o FPS 
 clock = pygame.time.Clock()
-
+gameOver = False
 while True:
     # Seta o FPS, clock do jogo
     clock.tick(30)
@@ -91,7 +82,7 @@ while True:
         new_ground = Ground(SCREEN_WIDTH,GROUND_WIDTH -20)
         ground_group.add(new_ground)
 
-    if SpriteOff.is_off_screen(pipe_group.sprites()[0]):
+    if SpriteOff.is_off_screen(pipe_group.sprites()[0]) and gameOver == False:
         pipe_group.remove(pipe_group.sprites()[0])
         pipe_group.remove(pipe_group.sprites()[0])
 
@@ -103,16 +94,24 @@ while True:
     bird_group.update()
     ground_group.update()
     pipe_group.update()
-
+    
     if (pygame.sprite.groupcollide(bird_group, ground_group,False,False, pygame.sprite.collide_mask) or 
        pygame.sprite.groupcollide(bird_group, pipe_group,False,False, pygame.sprite.collide_mask)) :
         # Game Over
+        gameOver = True        
+        print(gameOver)
+    if gameOver == True:
         game_over_group.draw(screen)
+        bird_group.remove(bird)
+        pipe_group.remove(pipes[0])
+        pipe_group.remove(pipes[1])
+        
         #break
 
 
     bird_group.draw(screen)
     pipe_group.draw(screen)
     ground_group.draw(screen)
+    
     
     pygame.display.update()
