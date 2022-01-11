@@ -1,8 +1,11 @@
 # Flappy Bird Game in Python
 
-<div style="display:flex; justify-content: space-between;">
+<div style="display:flex; justify-content: center;">
   
-  ![img](./img01.png)
-  ![img](./pipe.png)
-  ![img](./gameOver.png)
+  
+  <img src="./img01.png" alt="drawing" width="300"/>
+ 
+  <img src="./pipe.png" alt="drawing" width="300"/>
+ 
+  <img src="./gameOver.png" alt="drawing" width="300"/>
 </div>
